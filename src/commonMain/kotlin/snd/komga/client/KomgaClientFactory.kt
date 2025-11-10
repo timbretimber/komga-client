@@ -48,6 +48,7 @@ class KomgaClientFactory private constructor(
                     this.takeFrom(baseUrl())
                     this.pathSegments = this.pathSegments.filter { it.isNotBlank() } + "" // always add trailing slash
                 }
+                header("X-API-Key", apiKey)
             }
 
             val username = builder.username
@@ -55,9 +56,7 @@ class KomgaClientFactory private constructor(
             val useragent = builder.useragent
             val apiKey = builder.apiKey
         if (apiKey != null) {
-            install(DefaultRequest) {
-                header("X-API-Key", apiKey)
-            }
+
         } else if (username != null && password != null) {
             install(Auth) {
                 basic {
