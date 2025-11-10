@@ -30,7 +30,7 @@ class HttpUserClient(private val ktor: HttpClient) : KomgaUserClient {
         }.body()
     }
 
-    override suspend fun getMe(apiKey: String): Komgauser {
+    override suspend fun getMe(apiKey: String): KomgaUser {
         return ktor.get("api/v2/users/me") {
             header("X-API-Key", apiKey)
             header("Cache-Control", "no-cache, no-store, max-age=0")
