@@ -55,7 +55,7 @@ class KomgaClientFactory private constructor(
             val useragent = builder.useragent
             val apiKey = builder.apiKey
         if (apiKey != null) {
-            install(DefaultHeaders) {
+            install(DefaultRequest) {
                 header("X-API-Key", apiKey)
             }
         } else if (username != null && password != null) {
