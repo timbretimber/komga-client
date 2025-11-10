@@ -17,6 +17,7 @@ internal actual suspend fun getSseSession(
     baseUrl: String,
     username: String?,
     password: String?,
+    apiKey: String?,
     useragent: String?,
     authCookie: String?
 ): KomgaSSESession {

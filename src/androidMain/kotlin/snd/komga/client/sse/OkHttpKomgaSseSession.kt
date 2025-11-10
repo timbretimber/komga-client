@@ -30,6 +30,7 @@ class OkHttpKomgaSseSession(
     private val baseUrl: HttpUrl,
     private val username: String?,
     private val password: String?,
+    private val apiKey: String?,
     private val authCookie: String?,
     private val useragent: String?,
 ) : KomgaSSESession, EventSourceListener() {
@@ -92,7 +93,9 @@ class OkHttpKomgaSseSession(
         val request = Request.Builder()
             .url(baseUrl.newBuilder().addPathSegments("sse/v1/events").build())
         authCookie?.let { request.header("Cookie", authCookie) }
-        if (username != null && password != null) {
+        if (apiKey != null) {
+            request.header("X-API-Key", apiKey)
+        } else if (username != null && password != null) {
             request.header("Authorization", Credentials.basic(username, password))
         }
         if (useragent != null) {

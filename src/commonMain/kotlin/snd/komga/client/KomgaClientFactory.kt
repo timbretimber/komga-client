@@ -53,13 +53,18 @@ class KomgaClientFactory private constructor(
             val username = builder.username
             val password = builder.password
             val useragent = builder.useragent
-            if (username != null && password != null) {
-                install(Auth) {
-                    basic {
-                        credentials { BasicAuthCredentials(username = username, password = password) }
-                        sendWithoutRequest { true }
-                    }
+            val apiKey = builder.apiKey
+        if (apiKey != null) {
+            install(DefaultHeaders) {
+                header("X-API-Key", apiKey)
+            }
+        } else if (username != null && password != null) {
+            install(Auth) {
+                basic {
+                    credentials { BasicAuthCredentials(username = username, password = password) }
+                    sendWithoutRequest { true }
                 }
+            }
             }
 
             if (useragent != null) {
@@ -96,6 +101,7 @@ class KomgaClientFactory private constructor(
             baseUrl = baseUrl().buildString(),
             username = builder.username,
             password = builder.password,
+            apiKey = builder.apiKey,
             useragent = builder.useragent,
             authCookie = authCookie
         )
@@ -109,6 +115,7 @@ class KomgaClientFactory private constructor(
 
         internal var username: String? = null
         internal var password: String? = null
+        internal var apiKey: String? = null
         internal var useragent: String? = null
 
         fun ktor(ktor: HttpClient) = apply {
@@ -139,6 +146,10 @@ class KomgaClientFactory private constructor(
             this.password = password
         }
 
+        fun apiKey(apiKey: String) = apply {
+            this.apiKey = apiKey
+        }
+
         fun build(): KomgaClientFactory {
             return KomgaClientFactory(this)
         }
@@ -151,6 +162,7 @@ internal expect suspend fun getSseSession(
     baseUrl: String,
     username: String?,
     password: String?,
+    apiKey: String?,
     useragent: String?,
     authCookie: String?
 ): KomgaSSESession

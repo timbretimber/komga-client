@@ -8,6 +8,7 @@ interface KomgaUserClient {
     suspend fun logout()
     suspend fun getMe(): KomgaUser
     suspend fun getMe(username: String, password: String, rememberMe: Boolean): KomgaUser
+    suspend fun getMe(apiKey: String): KomgaUser
     suspend fun updateMyPassword(newPassword: String)
     suspend fun getAllUsers(): List<KomgaUser>
     suspend fun addUser(user: KomgaUserCreateRequest): KomgaUser

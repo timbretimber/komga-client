@@ -30,6 +30,13 @@ class HttpUserClient(private val ktor: HttpClient) : KomgaUserClient {
         }.body()
     }
 
+    override suspend fun getMe(apiKey: String): Komgauser {
+        return ktor.get("api/v2/users/me") {
+            header("X-API-Key", apiKey)
+            header("Cache-Control", "no-cache, no-store, max-age=0")
+        }.body()
+    }
+
     override suspend fun updateMyPassword(newPassword: String) {
         ktor.patch("api/v2/users/me/password") {
             contentType(ContentType.Application.Json)
